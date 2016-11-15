@@ -45,6 +45,10 @@ angular-aria@^1.5.8:
   version "1.5.8"
   resolved "https://registry.yarnpkg.com/angular-aria/-/angular-aria-1.5.8.tgz#558fa07dc82c6fa57b1438e660bbdcfcb805a2f5"
 
+angular-material-data-table@^0.10.9:
+  version "0.10.9"
+  resolved "https://registry.yarnpkg.com/angular-material-data-table/-/angular-material-data-table-0.10.9.tgz#a4171898999db13ccae2f4c042b7bc5c57bd4ca7"
+
 angular-material@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/angular-material/-/angular-material-1.1.1.tgz#ed12f394ba71a9189d664115624f6787a7439af2"
@@ -1989,6 +1993,10 @@ lower-case@^1.1.0, lower-case@^1.1.1, lower-case@^1.1.2:
 macaddress@^0.2.8:
   version "0.2.8"
   resolved "https://registry.yarnpkg.com/macaddress/-/macaddress-0.2.8.tgz#5904dc537c39ec6dbefeae902327135fa8511f12"
+
+material-design-icons@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/material-design-icons/-/material-design-icons-3.0.1.tgz#9a71c48747218ebca51e51a66da682038cdcb7bf"
 
 math-expression-evaluator@^1.2.14:
   version "1.2.14"

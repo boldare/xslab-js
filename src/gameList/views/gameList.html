@@ -1,16 +1,26 @@
-<div layout="row" layout-align="center center">
-  <md-card md-theme="game">
-    <md-card-title>
-      <md-card-title-media>
-        <div class="md-media-sm card-media layout-row">
-          <i class="fa fa-gamepad" style="font-size: 64px"></i>
-        </div>
-      </md-card-title-media>
-      <md-card-title-text>
-        <span class="md-headline">Xsolve Workshops</span>
-        <span class="md-subhead description ng-binding">BattleShip JavaScript game.</span>
-        <span class="md-subhead description ng-binding">Get ready for mystic journey on deep sea.</span>
-      </md-card-title-text>
-    </md-card-title>
-  </md-card>
+<div>
+  <div layout="row" layout-align="center center">
+    <md-card md-theme="game">
+      <md-card-title>
+        <md-card-title-media>
+          <div class="md-media-sm card-media layout-row">
+            <md-icon md-font-set="md" style="font-size:32px">videogame_asset</md-icon>
+          </div>
+        </md-card-title-media>
+        <md-card-title-text>
+          <span class="md-headline">Xsolve Workshops</span>
+          <span class="md-subhead description ng-binding">BattleShip JavaScript game.</span>
+          <span class="md-subhead description ng-binding">Get ready for mystic journey on deep sea.</span>
+        </md-card-title-text>
+      </md-card-title>
+    </md-card>
+  </div>
+  <!--<md-content flex layout-padding>-->
+    <!--<div layout="row" layout-align="center center">-->
+      <!--<xs-create-game></xs-create-game>-->
+    <!--</div>-->
+  <!--</md-content>-->
+  <!--<md-content flex layout-padding>-->
+
+  <xs-games-table data-games="games"></xs-games-table>
 </div>

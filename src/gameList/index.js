@@ -1,21 +1,13 @@
+require('./style.css');
+
 var gameList = angular.module('gameList', []);
 
-gameList.state = {
-  name: 'gameList',
-  url: '/',
-  template: require('./views/gameList.html'),
-  controller: function($scope, games) {
-    console.log(games);
+gameList.state = require('./state');
 
-  },
-  resolve: {
-    games: function(GamesRepository) {
-      return GamesRepository.getGames();
-    }
-  }
-};
+gameList.directive('xsCreateGame', require('./directives/create-game'));
+gameList.directive('xsGamesTable', require('./directives/games-table'));
 
-gameList.factory('GamesRepository', require('./services/gamesRepository'));
+gameList.factory('GamesRepository', require('./services/games-repository'));
 
 module.exports = gameList;
 

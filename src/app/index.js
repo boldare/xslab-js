@@ -1,29 +1,35 @@
 var angular = require('angular');
 var ngMaterial = require('angular-material');
 var uiRouter = require('angular-ui-router/release/angular-ui-router');
+var mgDable = require('angular-material-data-table');
 var initializationListener = require('./services/initialization-listener');
+var transitionListener = require('./services/transition-listener');
 var core = require('./directives/core');
 
 require('angular-material/angular-material.css');
-require('font-awesome/css/font-awesome.css');
+require('angular-material-data-table/dist/md-data-table.css');
+require('material-design-icons/iconfont/material-icons.css');
 require('./style.css');
 require('../style/app.css');
 
 var gameList = require('../gameList');
+var gameRoom = require('../gameRoom');
 var game = require('../game');
 
 var app = angular.module('app', [
   'ngMaterial',
+  'md.data.table',
   'ui.router',
   'gameList',
+  'gameRoom',
   'game'
 ]);
 
-
-app.directive('core', core);
+app.directive('xsCore', core);
 
 app.config(function($stateProvider, $urlRouterProvider) {
   $stateProvider.state(gameList.state);
+  $stateProvider.state(gameRoom.state);
   $stateProvider.state(game.state);
 
   $urlRouterProvider.otherwise(function($injector) {
@@ -43,6 +49,22 @@ app.config(function($mdThemingProvider) {
     .warnPalette('red');
 });
 
+app.config(function($mdIconProvider) {
+  $mdIconProvider.fontSet('md', 'material-icons');
+});
+
 app.run(initializationListener);
+app.run(transitionListener);
+
+app.filter('formatGameStatus', function() {
+  return function(input) {
+    switch (input) {
+      case 'WAIT_FOR_PLAYERS': return 'Waiting for players';
+      case 'IN_PROGRESS': return 'In progress';
+      case 'FINISHED': return 'Finished';
+      default: return input;
+    }
+  };
+});
 
 module.export = app;
