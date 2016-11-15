@@ -1,0 +1,17 @@
+<div>
+    <div id="app-loading" ng-if="!$root.app.initialized">
+        <div layout="column" layout-align="center center">
+            <div flex class="spinner">
+                <md-progress-circular md-mode="indeterminate" md-diameter="220px"></md-progress-circular>
+            </div>
+            <div flex class="message">
+                Application is loading...
+            </div>
+        </div>
+    </div>
+    <div ng-if="$root.app.initialized">
+        <md-content layout-padding>
+            <ui-view></ui-view>
+        </md-content>
+    </div>
+</div>

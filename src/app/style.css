@@ -1,0 +1,8 @@
+#app-loading {
+    padding: 40px;
+
+}
+#app-loading .message {
+    padding: 30px;
+    font-size: 2em;
+}
