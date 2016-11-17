@@ -5,10 +5,6 @@ module.exports = function () {
     },
 
     canUserJoin: function(game, name) {
-      if (game.players.length < 2) {
-        return true;
-      }
-
       var missingPlayers = game.players.filter(function(player) {
         return player.missing;
       });

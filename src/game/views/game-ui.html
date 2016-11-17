@@ -1,0 +1,11 @@
+<div>
+    <md-toolbar>
+        <div class="md-toolbar-tools">{{ name }}</div>
+    </md-toolbar>
+    <canvas
+        id="game-card"
+        style="margin: 10px; box-shadow: #ccc 20px 20px 12px -10px"
+        ng-mousemove="highlight($event)"
+        ng-click="handleHit($event)"
+    ></canvas>
+</div>

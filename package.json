@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "build": "rimraf dist && webpack --bail --progress --profile",
-    "server": "webpack-dev-server --host 0.0.0.0 --history-api-fallback --inline --progress",
+    "server": "webpack-dev-server --port 8081 --history-api-fallback --inline --progress",
     "start": "npm run server"
   },
   "author": "Xsolve",
