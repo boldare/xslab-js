@@ -1,7 +1,7 @@
 module.exports = function (COLORS) {
   var particles = [];
 
-  function drawExplosion (ctx, hit, mousePosition, drawCardFn) {
+  function drawExplosion (ctx, hit, mousePosition, drawBgFn) {
     var frame = 0;
 
     if (!hit) {
@@ -13,7 +13,7 @@ module.exports = function (COLORS) {
 
     function renderExplosion () {
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-      drawCardFn();
+      drawBgFn();
 
       for (var i=0; i < particles.length; i++) {
         particles[i].draw(ctx);
@@ -26,15 +26,15 @@ module.exports = function (COLORS) {
   }
 
   function createExplosion (mousePosition, color) {
+    var particlesCount = 10;
     var minSize = 10;
     var maxSize = 30;
-    var count = 10;
-    var minSpeed = 60.0;
-    var maxSpeed = 200.0;
+    var minSpeed = 120.0;
+    var maxSpeed = 240.0;
     var minScaleSpeed = 1.0;
     var maxScaleSpeed = 4.0;
 
-    for (var angle=0; angle < 360; angle += Math.round(360 / count)) {
+    for (var angle=0; angle < 360; angle += Math.round(360 / particlesCount)) {
       var particle = new Particle();
       var speed = randomFloat(minSpeed, maxSpeed);
 

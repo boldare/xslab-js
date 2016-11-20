@@ -13,5 +13,6 @@ game.constant('HIT_STATUSES', {
   SUNK: 'SUNK',
 });
 game.constant('COLORS', require('./colors'));
+game.constant('GRID_UNITS', 10); // @ToDo make it configurable on game creation
 
 module.exports = game;

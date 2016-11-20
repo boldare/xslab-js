@@ -1,7 +1,7 @@
 module.exports = function (GameDrawer, ExplosionDrawer) {
   return {
     restrict: 'E',
-    template: require('../views/game-ui.html'),
+    template: require('../views/game-board.html'),
     scope: {
       ships: '=',
       hits: '=',
@@ -26,33 +26,34 @@ module.exports = function (GameDrawer, ExplosionDrawer) {
         GameDrawer.clearCard(ctx);
         drawCard();
         GameDrawer.highlightRect(ctx, mousePosition);
-      }
+      };
 
       function shouldPreventMouseEvent (mousePosition) {
         return !$scope.onClick || !GameDrawer.isMouseInCard(mousePosition);
       }
 
       function drawCard () {
-        GameDrawer.drawBg(ctx);
+        GameDrawer.drawGameBoard(ctx);
         GameDrawer.drawShips(ctx, $scope.ships);
         GameDrawer.drawHits(ctx, $scope.hits);
       }
 
       $scope.handleHit = function (e) {
         var mousePosition = GameDrawer.getMousePos(canvas, e);
-        var cardMeasurements = GameDrawer.getCardMeasurements(ctx);
+        var boardMeasurements = GameDrawer.getGameBoardMeasurements(ctx);
 
         if ($scope.winner || shouldPreventMouseEvent(mousePosition)) {
           return;
         }
 
         var hit = $scope.onClick({
-          x: Math.round(mousePosition.x / cardMeasurements.rectWidth),
-          y: Math.round(mousePosition.y / cardMeasurements.rectHeight)
+          x: Math.round(mousePosition.x / boardMeasurements.gridWidth),
+          y: Math.round(mousePosition.y / boardMeasurements.gridHeight)
         });
 
+        // @ToDo show explosion on own board also
         ExplosionDrawer.drawExplosion(ctx, hit, mousePosition, drawCard);
-      }
+      };
 
       drawCard();
     }

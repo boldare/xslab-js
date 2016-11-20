@@ -1,33 +1,32 @@
-var canvasMargin = 20
-var gridUnits = 10
+module.exports = function gameDrawer (COLORS, GRID_UNITS) {
+  var canvasOffsetForNotation = 20;
 
-module.exports = function gameDrawer (COLORS) {
-  function drawBg (ctx) {
-    var cardMeasurements = getCardMeasurements(ctx);
+  function drawGameBoard (ctx) {
+    var gameBoardMeasurements = getGameBoardMeasurements(ctx);
 
     ctx.fillStyle = COLORS.water;
     ctx.fillRect(
-      canvasMargin,
-      canvasMargin,
-      cardMeasurements.width,
-      cardMeasurements.height
+      canvasOffsetForNotation,
+      canvasOffsetForNotation,
+      gameBoardMeasurements.width,
+      gameBoardMeasurements.height
     );
 
     drawGrid(ctx);
-    drawGridUnits(ctx);
+    drawGridNotation(ctx);
   }
 
-  function getCardMeasurements (ctx) {
+  function getGameBoardMeasurements (ctx) {
     return {
-      width: ctx.canvas.width - canvasMargin,
-      height: ctx.canvas.height - canvasMargin,
-      rectWidth: (ctx.canvas.width - canvasMargin) / gridUnits,
-      rectHeight: (ctx.canvas.height - canvasMargin) / gridUnits
+      width: ctx.canvas.width - canvasOffsetForNotation,
+      height: ctx.canvas.height - canvasOffsetForNotation,
+      gridWidth: (ctx.canvas.width - canvasOffsetForNotation) / GRID_UNITS,
+      gridHeight: (ctx.canvas.height - canvasOffsetForNotation) / GRID_UNITS
     }
   }
 
   function drawGrid (ctx) {
-    var cardMeasurements = getCardMeasurements(ctx);
+    var gameBoardMeasurements = getGameBoardMeasurements(ctx);
     var pointY;
     var pointX;
 
@@ -36,27 +35,27 @@ module.exports = function gameDrawer (COLORS) {
     ctx.beginPath();
 
     drawInLoopOverGrid(function (i) {
-      pointY = i * cardMeasurements.rectHeight + canvasMargin;
-      pointX = i * cardMeasurements.rectWidth + canvasMargin;
+      pointY = i * gameBoardMeasurements.gridHeight + canvasOffsetForNotation;
+      pointX = i * gameBoardMeasurements.gridWidth + canvasOffsetForNotation;
 
-      ctx.moveTo(canvasMargin, pointY);
-      ctx.lineTo(cardMeasurements.width + canvasMargin, pointY);
+      ctx.moveTo(canvasOffsetForNotation, pointY);
+      ctx.lineTo(gameBoardMeasurements.width + canvasOffsetForNotation, pointY);
 
-      ctx.moveTo(pointX, canvasMargin);
-      ctx.lineTo(pointX, cardMeasurements.height + canvasMargin);
+      ctx.moveTo(pointX, canvasOffsetForNotation);
+      ctx.lineTo(pointX, gameBoardMeasurements.height + canvasOffsetForNotation);
     })
 
     ctx.stroke();
   }
 
   function drawInLoopOverGrid (fn) {
-    for (var i = 0; i < gridUnits; i += 1) {
+    for (var i = 0; i < GRID_UNITS; i += 1) {
       fn(i);
     }
   }
 
-  function drawGridUnits (ctx) {
-    var cardMeasurements = getCardMeasurements(ctx);
+  function drawGridNotation (ctx) {
+    var gameBoardMeasurements = getGameBoardMeasurements(ctx);
     var scaleLetters = 'ABCDEFGHIJKLMNOPRSTU' // @ToDo fromChar?
 
     ctx.font = '12px "sans serif"';
@@ -65,13 +64,13 @@ module.exports = function gameDrawer (COLORS) {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'top';
     drawInLoopOverGrid(function (i) {
-      ctx.fillText(i + 1, (i * cardMeasurements.rectWidth + cardMeasurements.rectWidth / 2) + canvasMargin, 0);
+      ctx.fillText(i + 1, (i * gameBoardMeasurements.gridWidth + gameBoardMeasurements.gridWidth / 2) + canvasOffsetForNotation, 0);
     });
 
     ctx.textBaseline = 'middle';
     ctx.textAlign = 'left';
     drawInLoopOverGrid(function (i) {
-      ctx.fillText(scaleLetters[i], 0, (i * cardMeasurements.rectHeight + cardMeasurements.rectHeight / 2) + canvasMargin);
+      ctx.fillText(scaleLetters[i], 0, (i * gameBoardMeasurements.gridHeight + gameBoardMeasurements.gridHeight / 2) + canvasOffsetForNotation);
     });
   }
 
@@ -80,26 +79,26 @@ module.exports = function gameDrawer (COLORS) {
 
     angular.forEach(ships, function (points) {
       angular.forEach(points, function (point) {
-        ctx.fillRect.apply(ctx, getRectByCardCoordinate(ctx, point));
-      })
-    })
+        ctx.fillRect.apply(ctx, getRectByBoardCoordinates(ctx, point));
+      });
+    });
   }
 
   function drawHits (ctx, hits) {
     angular.forEach(hits, function (point) {
       ctx.fillStyle = COLORS[point.state.toLowerCase()];
-      ctx.fillRect.apply(ctx, getRectByCardCoordinate(ctx, point));
-    })
+      ctx.fillRect.apply(ctx, getRectByBoardCoordinates(ctx, point));
+    });
   }
 
-  function getRectByCardCoordinate (ctx, coords) {
-    var cardMeasurements = getCardMeasurements(ctx);
+  function getRectByBoardCoordinates (ctx, coords) {
+    var gameBoardMeasurements = getGameBoardMeasurements(ctx);
 
     return [
-      (coords.x - 1) * cardMeasurements.rectWidth + canvasMargin,
-      (coords.y - 1) * cardMeasurements.rectHeight + canvasMargin,
-      cardMeasurements.rectWidth,
-      cardMeasurements.rectHeight
+      (coords.x - 1) * gameBoardMeasurements.gridWidth + canvasOffsetForNotation,
+      (coords.y - 1) * gameBoardMeasurements.gridHeight + canvasOffsetForNotation,
+      gameBoardMeasurements.gridWidth,
+      gameBoardMeasurements.gridHeight
     ]
   }
 
@@ -113,22 +112,22 @@ module.exports = function gameDrawer (COLORS) {
   }
 
   function getRectFromMousePos (ctx, mousePos) {
-    var cardMeasurements = getCardMeasurements(ctx);
+    var gameBoardMeasurements = getGameBoardMeasurements(ctx);
 
-    return getRectByCardCoordinate(ctx, {
-      x: Math.round(mousePos.x / cardMeasurements.rectWidth),
-      y: Math.round(mousePos.y / cardMeasurements.rectHeight),
+    return getRectByBoardCoordinates(ctx, {
+      x: Math.round(mousePos.x / gameBoardMeasurements.gridWidth),
+      y: Math.round(mousePos.y / gameBoardMeasurements.gridHeight)
     });
   }
 
   function clearCard (ctx) {
-    ctx.clearRect(0,0,ctx.canvas.width, ctx.canvas.height)
+    ctx.clearRect(0,0,ctx.canvas.width, ctx.canvas.height);
   }
 
   function isMouseInCard (mousePosition) {
     return (
-        mousePosition.x >= canvasMargin &&
-        mousePosition.y >= canvasMargin
+        mousePosition.x >= canvasOffsetForNotation &&
+        mousePosition.y >= canvasOffsetForNotation
     );
   }
 
@@ -139,13 +138,13 @@ module.exports = function gameDrawer (COLORS) {
 
   return {
     clearCard: clearCard,
-    drawBg: drawBg,
+    drawGameBoard: drawGameBoard,
     drawHits: drawHits,
     drawShips: drawShips,
     getMousePos: getMousePos,
     isMouseInCard: isMouseInCard,
     highlightRect: highlightRect,
-    getCardMeasurements: getCardMeasurements,
+    getGameBoardMeasurements: getGameBoardMeasurements,
     getRectFromMousePos: getRectFromMousePos
   };
 };
