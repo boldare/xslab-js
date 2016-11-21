@@ -1,5 +1,23 @@
 <div>
-    <p>GAME</p>
-    <p>GameData: <b>{{ game }}</b></p>
-    <p>User Data: <b>{{ name }}</b></p>
+    <md-toolbar class="md-warn" ng-if="winner">
+        <div class="md-toolbar-tools">And the winner is: {{ winner }}!</div>
+    </md-toolbar>
+    <div layout="row" layout-padding layout-margin>
+        <game-ui
+            id="own-card"
+            ships="you.ships"
+            hits="you.hits"
+            name="you.name"
+            winner="winner"
+            flex
+        ></game-ui>
+        <game-ui
+            id="opponent-card"
+            hits="opponent.hits"
+            name="opponent.name"
+            on-click="onOpponentClick"
+            winner="winner"
+            flex
+        ></game-ui>
+    </div>
 </div>

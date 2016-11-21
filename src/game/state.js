@@ -5,11 +5,7 @@ module.exports = {
     name: null
   },
   template: require('./views/game.html'),
-  controller: function($scope, game, name) {
-    $scope.game = game;
-    $scope.name = name;
-  },
-
+  controller: require('./controllers/GameController'),
   resolve: {
     game: function($stateParams, GameRepository, GameManager) {
       return GameRepository.getGame($stateParams.gameId).then(function (game) {
