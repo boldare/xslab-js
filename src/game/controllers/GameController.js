@@ -1,12 +1,41 @@
-module.exports = function($scope, game, name, HIT_STATUSES) {
+module.exports = function($scope, $firebaseArray, firebase, game, name, HIT_STATUSES, GamesRepository) {
+  var roomListRef = firebase.database().ref().child("roomList");
+  var roomList = $firebaseArray(roomListRef);
+
+  roomList.$watch(function (event) {
+    console.log('event', event);
+    roomList
+      .$loaded()
+      .then(function(roomList) {
+        $scope.game.players = roomList.$getRecord(event.key).players;
+
+        $scope.you.hits = roomList.$getRecord(event.key).players.filter(function (value) {
+          return value.name === name
+        })[0].hits;
+
+        $scope.opponent.hits = roomList.$getRecord(event.key).players.filter(function (value) {
+          return value.name !== name
+        })[0].hits;
+
+        console.log('$scope.you.hits', $scope.you.hits, '$scope.opponent.hits', $scope.opponent.hits);
+
+        $scope.winner = getWinner($scope.you, $scope.opponent);
+
+        if ($scope.winner && $scope.game.status != 'FINISHED') {
+          GamesRepository.updateGameStatus(event.key, 'FINISHED');
+        }
+      });
+  });
+
   var shipsRectNo = 0;
 
   $scope.game = game;
   $scope.name = name;
-  $scope.you = game.players.filter(function (value) {
+  $scope.you = $scope.game.players.filter(function (value) {
     return value.name === name
   })[0];
-  $scope.opponent = game.players.filter(function (value) {
+
+  $scope.opponent = $scope.game.players.filter(function (value) {
     return value.name !== name
   })[0];
 
@@ -58,7 +87,7 @@ module.exports = function($scope, game, name, HIT_STATUSES) {
       $scope.opponent.hits[hitId] = hit;
     }
 
-    $scope.winner = getWinner();
+    $scope.winner = getWinner($scope.you, $scope.opponent);
 
     return hit;
   };
@@ -69,20 +98,27 @@ module.exports = function($scope, game, name, HIT_STATUSES) {
     });
   }
 
-  function getWinner () {
-    var opponentSunked = Object.keys($scope.opponent.hits).filter(function (hitId) {
-      return $scope.opponent.hits[hitId].state === HIT_STATUSES.SUNK;
-    }).length;
-    var yourSunked = Object.keys($scope.you.hits).filter(function (hitId) {
-      return $scope.opponent.hits[hitId].state === HIT_STATUSES.SUNK;
+  function getWinner (you, opponent) {
+    var opponentSunked = Object.keys(opponent.hits).filter(function (hitId) {
+      if (!opponent.hits[hitId]) return false;
+
+      return opponent.hits[hitId].state === HIT_STATUSES.SUNK;
     }).length;
 
+    var yourSunked = Object.keys(you.hits).filter(function (hitId) {
+      if (!you.hits[hitId]) return false;
+
+      return you.hits[hitId].state === HIT_STATUSES.SUNK;
+    }).length;
+
+    console.log('opponentSunked', opponentSunked, 'yourSunked', yourSunked, 'shipsRectNo', shipsRectNo);
+
     if (shipsRectNo === opponentSunked) {
-      return $scope.you.name;
+      return you.name;
     }
 
     if (shipsRectNo === yourSunked) {
-      return $scope.opponent.name;
+      return opponent.name;
     }
 
     return null;

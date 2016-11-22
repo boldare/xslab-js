@@ -11,12 +11,15 @@ require('angular-material-data-table/dist/md-data-table.css');
 require('material-design-icons/iconfont/material-icons.css');
 require('./style.css');
 require('../style/app.css');
+require('angularfire');
+var firebase = require('firebase');
 
 var gameList = require('../gameList');
 var gameRoom = require('../gameRoom');
 var game = require('../game');
 
 var app = angular.module('app', [
+  "firebase",
   'ngMaterial',
   'md.data.table',
   'ui.router',
@@ -24,6 +27,14 @@ var app = angular.module('app', [
   'gameRoom',
   'game'
 ]);
+
+app.service('firebase', function() {
+  firebase.initializeApp({
+    databaseURL: 'https://YOUR_FIREBASE_URL.firebaseio.com/'
+  });
+
+  return firebase;
+});
 
 app.directive('xsCore', core);
 

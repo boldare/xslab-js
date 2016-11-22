@@ -1,4 +1,4 @@
-module.exports = function ($q, $timeout, $mdDialog, GameAccessCheck) {
+module.exports = function ($q, $timeout, $mdDialog, GameAccessCheck, GamesRepository) {
   var joinGame = function (game, name) {
     game.players = game.players.map(function (player) {
       if (player.name === name) {
@@ -8,9 +8,9 @@ module.exports = function ($q, $timeout, $mdDialog, GameAccessCheck) {
       return player;
     });
 
-    return $timeout(function() {
+    return GamesRepository.updatePlayer(game.$id, name).then(function () {
       return game;
-    }, 1);
+    });
   };
 
   var connect = function(game, name) {

@@ -1,7 +1,7 @@
 var game = angular.module('game', []);
 
 game.state = require('./state');
-game.factory('GameRepository', require('./services/game-repository'));
+game.factory('GamesRepository', require('./services/games-repository'));
 game.factory('GameManager', require('./services/game-manager'));
 game.factory('GameAccessCheck', require('./services/game-acces-checker'));
 game.factory('GameDrawer', require('./services/game-drawer'));
@@ -10,7 +10,7 @@ game.directive('gameUi', require('./directives/game'));
 game.constant('HIT_STATUSES', {
   HIT: 'HIT',
   MISSED: 'MISSED',
-  SUNK: 'SUNK',
+  SUNK: 'SUNK'
 });
 game.constant('COLORS', require('./colors'));
 game.constant('GRID_UNITS', 10); // @ToDo make it configurable on game creation
