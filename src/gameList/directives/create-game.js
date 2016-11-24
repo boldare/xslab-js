@@ -16,10 +16,15 @@ module.exports = function() {
           }
 
           GamesRepository.createGame({ name: gameName })
-            .then(function (game) {
-              $state.go('game', { gameId: game.id });
+            .then(function (ref) {
+              $mdToast.show(
+                $mdToast
+                  .simple()
+                  .highlightClass('md-accent')
+                  .textContent('Game created! Now you can join game!')
+                  .hideDelay(3000)
+              );
             }, function() {
-
               $mdToast.show(
                 $mdToast
                   .simple()

@@ -5,10 +5,10 @@ module.exports = {
     name: null
   },
   template: require('./views/game.html'),
-  controller: require('./controllers/GameController'),
+  controller: require('./controllers/game-controller'),
   resolve: {
-    game: function($stateParams, GameRepository, GameManager) {
-      return GameRepository.getGame($stateParams.gameId).then(function (game) {
+    game: function($stateParams, GamesRepository, GameManager) {
+      return GamesRepository.getGame($stateParams.gameId).then(function (game) {
         return GameManager.connect(game, $stateParams.name);
       });
     },

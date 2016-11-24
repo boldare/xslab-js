@@ -5,6 +5,8 @@
     <div layout="row" layout-padding layout-margin>
         <game-ui
             id="own-card"
+            you="you"
+            opponent="opponent"
             ships="you.ships"
             hits="you.hits"
             name="you.name"
@@ -13,6 +15,8 @@
         ></game-ui>
         <game-ui
             id="opponent-card"
+            you="you"
+            opponent="opponent"
             hits="opponent.hits"
             name="opponent.name"
             on-click="onOpponentClick"
