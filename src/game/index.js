@@ -5,6 +5,7 @@ game.factory('GamesRepository', require('./services/games-repository'));
 game.factory('GameManager', require('./services/game-manager'));
 game.factory('GameAccessCheck', require('./services/game-acces-checker'));
 game.factory('GameDrawer', require('./services/game-drawer'));
+game.factory('GameShipsGenerator', require('./services/game-ships-generator'));
 game.factory('ExplosionDrawer', require('./services/explosion-drawer'));
 game.directive('gameUi', require('./directives/game'));
 game.constant('HIT_STATUSES', {

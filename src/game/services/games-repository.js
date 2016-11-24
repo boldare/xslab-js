@@ -1,39 +1,12 @@
 var createBoard = function (name) {
-  // random ships generator
   return {
     name: name,
     currentPlayerMove: 0,
-    status: 'WAIT_FOR_PLAYERS',
-    players: [
-      {
-        name: 'Kris',
-        missing: true,
-        ships: [
-          { 32: { x:3, y:2 }, 33: { x:3, y:3 } },
-          { 65: { x:6, y:5 }, 66: { x:6, y:6 } },
-          { 73: { x:7, y:3 }, 74: { x:7, y:4 }, 75: { x:7, y:5 } },
-        ],
-        hits: {
-          200: { x:200, y:200, state: 'HIT' }
-        }
-      },
-      {
-        name: 'Bob',
-        missing: true,
-        ships: [
-          { 12: { x:1, y:2 }, 22: { x:2, y:2 } },
-          { 55: { x:5, y:5 }, 56: { x:5, y:6 } },
-          { 33: { x:3, y:3 }, 34: { x:3, y:4 }, 35: { x:3, y:5 } },
-        ],
-        hits: {
-          200: { x:200, y:200, state: 'HIT' }
-        }
-      }
-    ]
+    status: 'WAIT_FOR_PLAYERS'
   }
 };
 
-module.exports = function($q, $timeout, $firebaseArray, firebase) {
+module.exports = function($q, $timeout, $firebaseArray, firebase, GameShipsGenerator) {
   var roomListRef = firebase.database().ref().child("roomList");
   var roomList = $firebaseArray(roomListRef);
 
@@ -43,7 +16,7 @@ module.exports = function($q, $timeout, $firebaseArray, firebase) {
     },
 
     createGame: function(gameData)  {
-      return roomList.$add(createBoard(gameData.name)).then(function (ref) {
+      return roomList.$add(createBoard(gameData.name, GameShipsGenerator)).then(function (ref) {
         return ref.key;
       });
     },
@@ -59,25 +32,18 @@ module.exports = function($q, $timeout, $firebaseArray, firebase) {
     areTwoPlayers: function (gameId) {
       var index = roomList.$indexFor(gameId);
 
-      var count = 0;
-      roomList[index].players.map(function (player) {
-        if (!player.missing) count++;
-      });
-
-      return count > 1;
+      return 2 === roomList[index].players.length;
     },
 
-    updatePlayer: function (gameId, playerName) {
+    updatePlayers: function (gameId, players) {
       return roomList
         .$loaded()
         .then(function(roomList) {
           var index = roomList.$indexFor(gameId);
-
-          var player = roomList[index].players.filter(function (player) {
-            return player.name == playerName;
-          });
-
-          player.missing = false;
+          roomList[index].players = players;
+          if (2 === roomList[index].players.length) {
+            roomList[index].status = 'IN_PROGRESS'
+          }
 
           return roomList.$save(index);
         });
@@ -111,22 +77,12 @@ module.exports = function($q, $timeout, $firebaseArray, firebase) {
             roomList[index].players[roomList[index].currentPlayerMove].hits = {};
           }
 
-          roomList[index].players[roomList[index].currentPlayerMove].hits['' + data.hit.x + data.hit.y] = data.hit;
-          roomList[index].currentPlayerMove = (roomList[index].currentPlayerMove + 1) % 2;
+          if (data.hit){
+            roomList[index].players[roomList[index].currentPlayerMove].hits['' + data.hit.x + data.hit.y] = data.hit;
+            roomList[index].currentPlayerMove = (roomList[index].currentPlayerMove + 1) % 2;
+          }
 
           roomList.$save(index).then(function(ref) {});
-        });
-    },
-
-    updateGameStatus: function (gameId, status) {
-      return roomList
-        .$loaded()
-        .then(function(roomList) {
-          var index = roomList.$indexFor(gameId);
-
-          roomList[index].status = status;
-
-          return roomList.$save(index);
         });
     }
   };

@@ -16,7 +16,7 @@ module.exports = function() {
           }
 
           GamesRepository.createGame({ name: gameName })
-            .then(function (ref) {
+            .then(function () {
               $mdToast.show(
                 $mdToast
                   .simple()

@@ -1,23 +1,25 @@
-module.exports = function ($q, $timeout, $mdDialog, GameAccessCheck, GamesRepository) {
+module.exports = function ($q, $timeout, $mdDialog, GameAccessCheck, GamesRepository, GameShipsGenerator) {
   var joinGame = function (game, name) {
-    game.players = game.players.map(function (player) {
-      if (player.name === name) {
-        player.missing = false;
-      }
-
-      return player;
+    //1st user join
+    if (!game.players) {
+      game.players = [];
+    }
+    game.players.push({
+      name: name,
+      ships: GameShipsGenerator.generate(),
+      hits: {}
     });
 
-    return GamesRepository.updatePlayer(game.$id, name).then(function () {
+    return GamesRepository.updatePlayers(game.$id, game.players).then(function () {
       return game;
     });
   };
 
   var connect = function(game, name) {
     return $q(function(resolve, reject) {
-      var access = GameAccessCheck.canUserJoin(game, name);
-      if (access.error) {
-        reject({ error: access.error });
+      var canJoin = GameAccessCheck.canUserJoin(game, name);
+      if (!canJoin) {
+        reject({ error: "You cant joint to game!" });
       } else {
         joinGame(game, name).then(resolve);
       }
@@ -29,7 +31,6 @@ module.exports = function ($q, $timeout, $mdDialog, GameAccessCheck, GamesReposi
       $mdDialog.show($mdDialog.prompt()
         .title('What is your nickname')
         .placeholder('Nickname')
-        .textContent('All of the banks have agreed to forgive you your debts.')
         .ok('Join!')
         .cancel('Go to list'))
         .then(function(name) {

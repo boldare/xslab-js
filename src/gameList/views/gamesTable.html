@@ -21,8 +21,7 @@
                     <td md-cell>{{game.status | formatGameStatus }}</td>
                     <td md-cell>
                         <span ng-repeat="player in game.players">
-                            <b ng-show="!player.missing">{{ player.name}}{{$last ? '' : ', '}}</b>
-                            <span ng-show="player.missing">{{ player.name}}{{$last ? '' : ', '}}</span>
+                            <span>{{ player.name}}{{$last ? '' : ',  '}}</span>
                         </span>
                     </td>
                     <td md-cell>{{ game.winner || '-' }}</td>

@@ -5,23 +5,13 @@ module.exports = function () {
     },
 
     canUserJoin: function(game, name) {
-      var missingPlayers = game.players.filter(function(player) {
-        return player.missing;
-      });
-
-      if (!missingPlayers.length) {
-        return { error: 'Game is in progress!' };
+      if (!game.players) {
+        return true;
       }
 
-      var missingPlayer = missingPlayers.filter(function(player) {
-        return player.name === name;
+      return !game.players.find(function (player) {
+        return player.name == name
       });
-
-      if (!missingPlayer.length) {
-        return { error: 'You can not join to this game!' };
-      }
-
-      return true;
     }
   };
 };
