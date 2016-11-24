@@ -2,9 +2,15 @@ var angular = require('angular');
 var ngMaterial = require('angular-material');
 var uiRouter = require('angular-ui-router/release/angular-ui-router');
 var mgDable = require('angular-material-data-table');
+var firebase = require('firebase');
+
 var initializationListener = require('./services/initialization-listener');
 var transitionListener = require('./services/transition-listener');
 var core = require('./directives/core');
+var gameList = require('../gameList');
+var gameRoom = require('../gameRoom');
+var game = require('../game');
+var firebaseConfig = require('./firebase-config');
 
 require('angular-material/angular-material.css');
 require('angular-material-data-table/dist/md-data-table.css');
@@ -12,11 +18,7 @@ require('material-design-icons/iconfont/material-icons.css');
 require('./style.css');
 require('../style/app.css');
 require('angularfire');
-var firebase = require('firebase');
 
-var gameList = require('../gameList');
-var gameRoom = require('../gameRoom');
-var game = require('../game');
 
 var app = angular.module('app', [
   "firebase",
@@ -29,11 +31,7 @@ var app = angular.module('app', [
 ]);
 
 app.service('firebase', function() {
-  firebase.initializeApp({
-    databaseURL: 'https://YOUR_FIREBASE_URL.firebaseio.com/'
-  });
-
-  return firebase;
+  return firebase.initializeApp(firebaseConfig);
 });
 
 app.directive('xsCore', core);

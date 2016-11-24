@@ -3,21 +3,18 @@ module.exports = function($scope, $firebaseArray, firebase, game, name, HIT_STAT
   var roomList = $firebaseArray(roomListRef);
 
   roomList.$watch(function (event) {
-    console.log('event', event);
     roomList
       .$loaded()
       .then(function(roomList) {
         $scope.game.players = roomList.$getRecord(event.key).players;
 
-        $scope.you.hits = roomList.$getRecord(event.key).players.filter(function (value) {
+        $scope.you.hits = $scope.game.players.filter(function (value) {
           return value.name === name
         })[0].hits;
 
-        $scope.opponent.hits = roomList.$getRecord(event.key).players.filter(function (value) {
+        $scope.opponent.hits = $scope.game.players.filter(function (value) {
           return value.name !== name
         })[0].hits;
-
-        console.log('$scope.you.hits', $scope.you.hits, '$scope.opponent.hits', $scope.opponent.hits);
 
         $scope.winner = getWinner($scope.you, $scope.opponent);
 
@@ -41,7 +38,7 @@ module.exports = function($scope, $firebaseArray, firebase, game, name, HIT_STAT
 
   angular.forEach($scope.you.ships, function (ship) {
     shipsRectNo += Object.keys(ship).length;
-  })
+  });
 
   $scope.onOpponentClick = function (coords) {
     var hit = angular.extend({}, coords);
@@ -100,18 +97,20 @@ module.exports = function($scope, $firebaseArray, firebase, game, name, HIT_STAT
 
   function getWinner (you, opponent) {
     var opponentSunked = Object.keys(opponent.hits).filter(function (hitId) {
-      if (!opponent.hits[hitId]) return false;
+      if (!opponent.hits[hitId]) {
+        return false;
+      }
 
       return opponent.hits[hitId].state === HIT_STATUSES.SUNK;
     }).length;
 
     var yourSunked = Object.keys(you.hits).filter(function (hitId) {
-      if (!you.hits[hitId]) return false;
+      if (!you.hits[hitId]) {
+        return false;
+      }
 
       return you.hits[hitId].state === HIT_STATUSES.SUNK;
     }).length;
-
-    console.log('opponentSunked', opponentSunked, 'yourSunked', yourSunked, 'shipsRectNo', shipsRectNo);
 
     if (shipsRectNo === opponentSunked) {
       return you.name;

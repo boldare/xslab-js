@@ -4,7 +4,6 @@ module.exports = function ($mdToast, GameDrawer, ExplosionDrawer, GamesRepositor
     template: require('../views/game-board.html'),
     scope: {
       you: '=',
-      opponent: '=',
       ships: '=',
       hits: '=',
       name: '=',
@@ -99,8 +98,6 @@ module.exports = function ($mdToast, GameDrawer, ExplosionDrawer, GamesRepositor
             });
 
             GamesRepository.updateGame($scope.$parent.game.$id, {hit: hit});
-
-            // @ToDo show explosion on own board also
             ExplosionDrawer.drawExplosion(ctx, hit, mousePosition, drawCard);
           });
       };

@@ -49,16 +49,11 @@ module.exports = function($q, $timeout, $firebaseArray, firebase) {
     },
 
     getGame: function (id) {
-      return $q(function(resolve, reject) {
-        roomList
-          .$loaded()
-          .then(function(roomList) {
-            resolve(roomList.$getRecord(id));
-          })
-          .catch(function(error) {
-            reject(error);
-          });
-      });
+      return roomList
+        .$loaded()
+        .then(function(roomList) {
+          return roomList.$getRecord(id);
+        })
     },
 
     areTwoPlayers: function (gameId) {
