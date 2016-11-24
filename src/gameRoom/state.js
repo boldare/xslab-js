@@ -1,7 +1,7 @@
 module.exports = {
   name: 'gameRoom',
   url: '/room/{gameId}',
-  onEnter: function($state, game, name) {
+  controller: function($state, game, name) {
     $state.go('game', { gameId: game.id, name: name });
   },
 
