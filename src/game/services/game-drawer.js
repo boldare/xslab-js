@@ -4,16 +4,10 @@ module.exports = function gameDrawer (COLORS, GRID_UNITS) {
   function drawGameBoard (ctx) {
     var gameBoardMeasurements = getGameBoardMeasurements(ctx);
 
-    ctx.fillStyle = COLORS.water;
-    ctx.fillRect(
-      canvasOffsetForNotation,
-      canvasOffsetForNotation,
-      gameBoardMeasurements.width,
-      gameBoardMeasurements.height
-    );
+    // Color background
+    // Draw Grid
+    // Draw Letters
 
-    drawGrid(ctx);
-    drawGridNotation(ctx);
   }
 
   function getGameBoardMeasurements (ctx) {
@@ -26,26 +20,10 @@ module.exports = function gameDrawer (COLORS, GRID_UNITS) {
   }
 
   function drawGrid (ctx) {
-    var gameBoardMeasurements = getGameBoardMeasurements(ctx);
-    var pointY;
-    var pointX;
+      // Draw vertical lines
+      // Use moveTo, lineTo canvas
 
-    ctx.strokeStyle = COLORS.waterStroke
-    ctx.strokeWidth = 1;
-    ctx.beginPath();
-
-    drawInLoopOverGrid(function (i) {
-      pointY = i * gameBoardMeasurements.gridHeight + canvasOffsetForNotation;
-      pointX = i * gameBoardMeasurements.gridWidth + canvasOffsetForNotation;
-
-      ctx.moveTo(canvasOffsetForNotation, pointY);
-      ctx.lineTo(gameBoardMeasurements.width + canvasOffsetForNotation, pointY);
-
-      ctx.moveTo(pointX, canvasOffsetForNotation);
-      ctx.lineTo(pointX, gameBoardMeasurements.height + canvasOffsetForNotation);
-    })
-
-    ctx.stroke();
+      // ctx.stroke();
   }
 
   function drawInLoopOverGrid (fn) {

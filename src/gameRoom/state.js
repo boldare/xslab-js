@@ -12,9 +12,9 @@ module.exports = {
 
     name: function ($q, game, GameManager) {
       return $q(function (resolve, reject) {
-        if ('IN_PROGRESS' === game.status) {
-          reject({ error: 'You can not join to game which is already in progress.' });
-        }
+        // if ('IN_PROGRESS' === game.status) {
+        //   reject({ error: 'You can not join to game which is already in progress.' });
+        // }
 
         if ('FINISHED' === game.status) {
           reject({ error: 'You can not join to game which is finished.' });

@@ -5,6 +5,8 @@ module.exports = function () {
     },
 
     canUserJoin: function(game, name) {
+      return true;
+
       if (!game.players) {
         return true;
       }

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="game"></canvas>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.0.5/es6-promise.auto.js"></script>
+
+<script>
+  var canvas = document.getElementById("game");
+  canvas.width = 400;
+  canvas.height = 400;
+  var GRID_UNITS = 10;
+  var ctx = canvas.getContext("2d");
+  var canvasOffsetForNotation = 20;
+  var gameBoardMeasurements = getGameBoardMeasurements(ctx);
+
+
+  drawGridNotation(ctx)
+  ctx.fillStyle = "#E0F2F1";
+  ctx.fillRect(
+    canvasOffsetForNotation,
+    canvasOffsetForNotation,
+    gameBoardMeasurements.width,
+    gameBoardMeasurements.height
+  );
+  drawGrid(ctx);
+
+
+  function getGameBoardMeasurements (ctx) {
+    return {
+      width: ctx.canvas.width - canvasOffsetForNotation,
+      height: ctx.canvas.height - canvasOffsetForNotation,
+      gridWidth: (ctx.canvas.width - canvasOffsetForNotation) / GRID_UNITS,
+      gridHeight: (ctx.canvas.height - canvasOffsetForNotation) / GRID_UNITS
+    }
+  }
+
+  function drawGrid (ctx) {
+    var gameBoardMeasurements = getGameBoardMeasurements(ctx);
+    ctx.strokeStyle = '#FFFFFF';
+    ctx.strokeWidth = 1;
+    ctx.beginPath();
+
+    /*
+    var drawLine = function(i) {
+      var pointY = i * gameBoardMeasurements.gridHeight + canvasOffsetForNotation;
+
+      ctx.moveTo(canvasOffsetForNotation, pointY);
+      ctx.lineTo(canvasOffsetForNotation + gameBoardMeasurements.width, pointY);
+      ctx.stroke();
+    };
+    drawLine(1)
+    */
+
+
+    /*
+    var drawLine = function(i) {
+      var pointY = i * gameBoardMeasurements.gridHeight + canvasOffsetForNotation;
+      var pixels = gameBoardMeasurements.width;
+      for (var j = 0 ; j <= pixels; j ++ ) {
+        ctx.moveTo(canvasOffsetForNotation + j, pointY);
+        ctx.lineTo(canvasOffsetForNotation + j +1 , pointY);
+        ctx.stroke();
+      }
+    };
+    drawLine(1)
+    */
+
+
+    /*
+    var drawLine = function(i) {
+      var size = 2;
+      var pixels = gameBoardMeasurements.width / size;
+      var pointY = i * gameBoardMeasurements.gridHeight + canvasOffsetForNotation;
+
+      for (var j = 0 ; j <= pixels; j ++ ) {
+        setTimeout(function (j) {
+          ctx.moveTo(canvasOffsetForNotation + size * (j + 0), pointY);
+          ctx.lineTo(canvasOffsetForNotation + size * (j + 1), pointY);
+          ctx.stroke();
+
+        }, j);
+      }
+    };
+
+    drawLine(1)
+    */
+
+
+
+    /*
+    var drawLine = function(i) {
+      var size = 2;
+      var pixels = gameBoardMeasurements.width / size;
+      var pointY = i * gameBoardMeasurements.gridHeight + canvasOffsetForNotation;
+
+      for (var j = 0 ; j <= pixels; j ++ ) {
+        setTimeout(function (j) {
+          ctx.moveTo(canvasOffsetForNotation + size * (j + 0), pointY);
+          ctx.lineTo(canvasOffsetForNotation + size * (j + 1), pointY);
+          ctx.stroke();
+
+        }.bind(null, j), 2 * j);
+      }
+    };
+
+    drawLine(1)
+    */
+
+    /*
+    var drawLine = function (i) {
+      var size = 2;
+      var pixels = gameBoardMeasurements.width / size;
+      var pointY = i * gameBoardMeasurements.gridHeight + canvasOffsetForNotation;
+
+      return new Promise(function(resolve) {
+        for (var j = 0 ; j <= pixels; j ++ ) {
+          setTimeout(function (j) {
+            ctx.moveTo(canvasOffsetForNotation + size * (j + 0), pointY);
+            ctx.lineTo(canvasOffsetForNotation + size * (j + 1), pointY);
+            ctx.stroke();
+
+            if (j === pixels) { resolve(); }
+          }.bind(null, j), 2 * j);
+        }
+      });
+    };
+
+    drawLine(1);
+    */
+
+    /*
+    drawLine(1)
+      .then(function(){
+        return drawLine(2);
+      })
+      .then(function () {
+        return drawLine(3)
+      })
+    */
+
+
+    /*
+    var promiseWrapper = function (i) {
+      return function() {
+        return drawLine(i);
+      }
+    };
+    */
+
+
+    /*
+    drawLine(1)
+      .then(promiseWrapper(2))
+      .then(promiseWrapper(3))
+    */
+
+    /*
+    var promiseChain = Promise.resolve();
+    for (var i = 0 ; i < 10 ; i++) {
+      promiseChain = promiseChain.then(promiseWrapper(i))
+    }
+    */
+  }
+
+  function drawGridNotation (ctx) {
+    var gameBoardMeasurements = getGameBoardMeasurements(ctx);
+    var scaleLetters = 'ABCDEFGHIJKLMNOPRSTU' // @ToDo fromChar?
+
+    ctx.font = '12px "sans serif"';
+    ctx.fillStyle = 'red';
+
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    drawInLoopOverGrid(function (i) {
+      ctx.fillText(i + 1, (i * gameBoardMeasurements.gridWidth + gameBoardMeasurements.gridWidth / 2) + canvasOffsetForNotation, 0);
+    });
+
+    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'left';
+    drawInLoopOverGrid(function (i) {
+      ctx.fillText(scaleLetters[i], 0, (i * gameBoardMeasurements.gridHeight + gameBoardMeasurements.gridHeight / 2) + canvasOffsetForNotation);
+    });
+  }
+
+  function drawInLoopOverGrid (fn) {
+    for (var i = 0; i < GRID_UNITS; i += 1) {
+      fn(i);
+    }
+  }
+</script>
+</html>

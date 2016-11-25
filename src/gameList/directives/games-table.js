@@ -7,6 +7,7 @@ module.exports = function() {
     template: require('../views/gamesTable.html'),
     controller: function($scope, GameAccessCheck) {
       $scope.canJoin = function(game) {
+        return true;
         return GameAccessCheck.isWaitingForPlayer(game);
       };
     }
