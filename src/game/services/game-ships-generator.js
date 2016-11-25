@@ -4,16 +4,17 @@ var shipSizeConfig = [4, 3, 2, 1, 1, 1, 1];
 // Direction 1 - Horizontal
 // x, y are starting point
 var placeShip = function (size, direction, x, y, ships) {
+  var ship = {};
+
   for (var i = 0; i < size; i++) {
     var xx = x + i * (direction);
     var yy = y + i * (!direction);
-    var ship = {};
     var key = '' + xx + yy;
 
     ship[key] = { x:xx, y:yy };
-
-    ships.push(ship);
   }
+
+  ships.push(ship);
 };
 
 var getRandomInt = function(min, max) {
