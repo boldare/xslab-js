@@ -1,3 +1,29 @@
+// Expected data
+// [{
+//   "37": {
+//     "x": 3,
+//     "y": 7
+//   },
+//   "47": {
+//     "x": 4,
+//     "y": 7
+//   },
+//   "57": {
+//     "x": 5,
+//     "y": 7
+//   },
+//   "67": {
+//     "x": 6,
+//     "y": 7
+//   }
+// }, {
+//   "98": {
+//     "x": 9,
+//     "y": 8
+//   }
+// }]
+
+
 var shipSizeConfig = [4, 3, 2, 1, 1, 1, 1];
 
 // Direction 0 - Vertical
@@ -7,11 +33,7 @@ var placeShip = function (size, direction, x, y, ships) {
   var ship = {};
 
   for (var i = 0; i < size; i++) {
-    var xx = x + i * (direction);
-    var yy = y + i * (!direction);
-    var key = '' + xx + yy;
-
-    ship[key] = { x:xx, y:yy };
+   //Create ship here
   }
 
   ships.push(ship);
@@ -30,26 +52,7 @@ module.exports = function(GRID_UNITS) {
       var ships = [];
 
       var canBePlaced = function (size, direction, x, y, ships) {
-        if (direction) {
-          if (x + size > width) {
-            return false
-          }
-        } else {
-          if (y + size > height) {
-            return false;
-          }
-        }
-
-        for (var i = 0; i < size; i++) {
-          var xx = x + i * (direction);
-          var yy = y + i * (!direction);
-          var key = '' + xx + yy;
-
-          if (key in ships) {
-            return false;
-          }
-        }
-
+        //Determine if ship can be placed -> does not overlaps on other ships and is inside map ragne
         return true;
       };
 
