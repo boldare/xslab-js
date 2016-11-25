@@ -7,29 +7,18 @@ var createBoard = function (name) {
 };
 
 module.exports = function($q, $timeout, $firebaseArray, firebase, GameShipsGenerator) {
-  //Step-2-B: Adding firebase synchronization
-  var roomListRef = firebase.database().ref().child("roomList");
-  var roomList = $firebaseArray(roomListRef);
+  //Step-2-B: Adding firebase synchronization - collection initialization
 
   return {
     getGames: function () {
-      return roomList;
     },
 
-    //Step-2-B: Adding firebase synchronization
+    //Step-2-B: Adding firebase synchronization - implement createGame method
     createGame: function(gameData)  {
-      return roomList.$add(createBoard(gameData.name, GameShipsGenerator)).then(function (ref) {
-        return ref.key;
-      });
     },
 
-    //Step-2-B: Adding firebase synchronization
+    //Step-2-B: Adding firebase synchronization - implement getGame method
     getGame: function (id) {
-      return roomList
-        .$loaded()
-        .then(function(roomList) {
-          return roomList.$getRecord(id);
-        })
     }
   };
 };
