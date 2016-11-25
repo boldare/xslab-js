@@ -16,7 +16,19 @@
 
                 <tbody md-body>
                 <tr md-row ng-repeat="game in games">
-                    //Step-2-A: Mock implementation - display games
+                    <td md-cell>{{game.$id}}</td>
+                    <td md-cell>{{game.name}}</td>
+                    <td md-cell>{{game.status | formatGameStatus }}</td>
+                    <td md-cell>
+                        <span ng-repeat="player in game.players">
+                            <span>{{ player.name}}{{$last ? '' : ',  '}}</span>
+                        </span>
+                    </td>
+                    <td md-cell>{{ game.winner || '-' }}</td>
+                    <td md-cell>
+                        <span ng-if="canJoin(game)"><a ui-sref="gameRoom({gameId: game.$id})">JOIN</a></span>
+                        <span ng-if="!canJoin(game)"> - </span>
+                    </td>
                 </tr>
                 </tbody>
             </table>

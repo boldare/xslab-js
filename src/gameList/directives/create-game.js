@@ -16,7 +16,24 @@ module.exports = function() {
           }
 
           //Step-2-A: Mock implementation
-          //Create new game using GamesRepository
+          GamesRepository.createGame({ name: gameName })
+            .then(function () {
+              $mdToast.show(
+                $mdToast
+                  .simple()
+                  .highlightClass('md-accent')
+                  .textContent('Game created! Now you can join game!')
+                  .hideDelay(3000)
+              );
+            }, function() {
+              $mdToast.show(
+                $mdToast
+                  .simple()
+                  .highlightClass('md-accent')
+                  .textContent('An error occurred when creating a game!')
+                  .hideDelay(3000)
+              );
+            });
         });
       };
     }
