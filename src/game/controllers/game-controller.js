@@ -15,6 +15,8 @@ module.exports = function($scope, $firebaseArray, firebase, game, name, HIT_STAT
     $scope.winner = room.winner;
     $scope.you = getYou();
     $scope.opponent = getOpponent();
+    $scope.status = room.status;
+
     var winner = getWinner($scope.you, $scope.opponent);
 
     if (winner && $scope.game.status != 'FINISHED') {
