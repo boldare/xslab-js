@@ -13,17 +13,17 @@ module.exports = function($scope, $firebaseArray, firebase, game, name, HIT_STAT
       return;
     }
     $scope.winner = room.winner;
+    //TASK-4: Implement getYou function
     $scope.you = getYou();
+    //TASK-4: Implement getOpponent function
     $scope.opponent = getOpponent();
+
     $scope.status = room.status;
 
+    //TASK-4: Implement getWinner function
     var winner = getWinner($scope.you, $scope.opponent);
 
-    if (winner && $scope.game.status != 'FINISHED') {
-      room.status = 'FINISHED';
-      room.winner = winner;
-      room.$save();
-    }
+    //TASK-4: Implement saving game status and winner to firebase
   });
 
   var shipsRectNo = 0;
@@ -93,33 +93,10 @@ module.exports = function($scope, $firebaseArray, firebase, game, name, HIT_STAT
   }
 
   function getWinner (you, opponent) {
-    var yourSunked = Object.keys(you.hits).filter(function (hitId) {
-      if (!you.hits[hitId]) {
-        return false;
-      }
-
-      return you.hits[hitId].state === HIT_STATUSES.SUNK;
-    }).length;
-
-    if (shipsRectNo === yourSunked) {
-      return opponent.name;
-    }
-
-    return null;
   }
 
   function getYou() {
-    var player = $scope.game.players.filter(function (value) {
-      return value.name === name
-    })[0];
-    refreshPlayerHits(player);
-    return player;
   }
   function getOpponent () {
-    var player = $scope.game.players.filter(function (value) {
-      return value.name !== name
-    })[0];
-    refreshPlayerHits(player);
-    return player;
   }
 };
